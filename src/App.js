@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateTotals } from './app/features/cartSlice';
+import Modal from './components/Modal';
 
 function App() {
   const { cartItems } = useSelector((store) => store.cart);
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <main>
+      <Modal />
       <Navbar />
       <CartContainer />
     </main>
