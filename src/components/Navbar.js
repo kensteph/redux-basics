@@ -2,8 +2,8 @@ import { CartIcon } from '../icons';
 import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+  // Access the state 'cart'  from the global state
   const { amount } = useSelector((state) => state.cart);
-
   return (
     <nav>
       <div className="nav-center">
