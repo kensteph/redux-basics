@@ -65,6 +65,11 @@ const cartSlice = createSlice({
     },
     [getCartItems.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log(action);
+      state.cartItems = action.payload;
+    },
+    [getCartItems.rejected]: (state) => {
+      state.isLoading = false;
     },
   },
 });
