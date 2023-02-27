@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import cartItems from '../../cartItems';
 
 const initialState = {
@@ -7,6 +8,25 @@ const initialState = {
   total: 0,
   isLoading: true,
 };
+const url = 'https://course-api.com/react-useReducer-cart-project';
+
+// API Call
+export const getCartItems = createAsyncThunk(
+  'cart/getCartItems',
+  async (name, thunkAPI) => {
+    try {
+      // console.log(name);
+      // console.log(thunkAPI);
+      // console.log(thunkAPI.getState());
+      // thunkAPI.dispatch(openModal());
+      const resp = await axios(url);
+
+      return resp.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue('something went wrong');
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -20,9 +40,7 @@ const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
     },
     increase: (state, { payload }) => {
-      console.log(payload);
       const cartItem = state.cartItems.find((item) => item.id === payload.id);
-      console.log(cartItem);
       cartItem.amount = cartItem.amount + 1;
     },
     decrease: (state, { payload }) => {
@@ -38,6 +56,15 @@ const cartSlice = createSlice({
       });
       state.amount = amount;
       state.total = total.toFixed(2);
+    },
+  },
+  // Life cycle actions
+  extraReducers: {
+    [getCartItems.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getCartItems.fulfilled]: (state, action) => {
+      state.isLoading = false;
     },
   },
 });
